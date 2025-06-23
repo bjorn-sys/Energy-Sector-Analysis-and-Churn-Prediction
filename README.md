@@ -96,9 +96,10 @@ The trained model was saved as a `.pkl` file:
 ```python
 with open('random_forest_model.pkl', 'wb') as f:
     pickle.dump(clf, f)
+
 ---
 
-# 📈 Business Recommendations
+## 📈 Business Recommendations
 Based on analysis and model results, the following actionable recommendations are made:
 
 1. 🎯 Target High-Risk Customers
