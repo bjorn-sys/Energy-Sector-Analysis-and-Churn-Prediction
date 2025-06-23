@@ -98,9 +98,8 @@ with open('random_forest_model.pkl', 'wb') as f:
     pickle.dump(clf, f)
 
 ---
-
-## 📈 Business Recommendations
-Based on analysis and model results, the following actionable recommendations are made:
+# 📈 Business Recommendations
+**Based on analysis and model results, the following actionable recommendations are made:**
 
 1. 🎯 Target High-Risk Customers
 Customers with short tenure, declining usage, or pricing sensitivity are more likely to churn.
