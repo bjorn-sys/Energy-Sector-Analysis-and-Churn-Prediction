@@ -1,141 +1,140 @@
-# Energy-Sector-Analysis-and-Churn-Prediction
-# 📊 Customer Churn Prediction Project
-
-## 🧾 Overview
-
-This project aims to **predict customer churn** using historical client and energy pricing data. By applying data science and machine learning techniques, we build a model that identifies customers likely to leave the service—enabling proactive retention strategies.
-
+# 📊 Customer Churn Prediction with Decision Trees
+* This project focuses on building a machine learning model to predict customer churn based on client behavior and pricing data. It leverages feature engineering, data preprocessing, and resampling techniques to ensure balanced training and generalization of the model.
 ---
+# 🧰 Tools & Libraries
+* Python (pandas, NumPy)
 
-## 📁 Data Description
+* scikit-learn (DecisionTreeClassifier, preprocessing, evaluation metrics)
 
-The project uses two main datasets:
+* imbalanced-learn (RandomOverSampler, RandomUnderSampler)
 
-- **Client Dataset:** Customer-specific attributes like energy usage, contract dates, product counts, and churn label.
-- **Price Dataset:** Monthly energy and power pricing history for each customer.
-
+* Matplotlib & Seaborn (visualization)
 ---
+# 📂 Dataset Overview
+* Two datasets are used in this project:
 
-## 🔍 Workflow Summary
+* client_data.csv – Client-level information including churn labels and contract metadata.
 
-### 1. Data Collection
+* price_data.csv – Pricing history associated with each client over time.
 
-- Loaded both datasets using `pandas`.
-- Verified data types, missing values, and memory usage.
+**Dataset	Records	Features**
+* client_data	14,606	26
+* price_data	193,002	8
 
-### 2. Exploratory Data Analysis (EDA)
+# 📊 Exploratory Data Analysis (EDA)
+**Summary statistics**
 
-- Plotted churn distribution using bar and pie charts.
-- Analyzed `channel_sales` segments and their churn ratios.
-- Explored distributions of key numerical features (e.g., `cons_12m`, `margin_net_pow_ele`, etc.).
-- Highlighted high-risk segments based on visual trends.
+* Data type checks and missing value handling
 
-### 3. Data Preprocessing
+**Visualizations:**
 
-- Converted all date fields into proper datetime format.
-- Merged client and price data using customer `id`.
-- Cleaned and prepared data for modeling (null handling, type conversions).
+* Distribution plots using histplot
 
+* Bar and pie plots for churn distribution
+
+**Channel sales breakdown**
 ---
-
-## 🛠️ Feature Engineering
-
-Created new features to boost predictive power:
-
-- **Time Features:**
-  - `tenure_days`, `days_since_modif`, `days_to_renewal`
-
-- **Consumption Behavior:**
-  - `avg_monthly_cons`, `cons_change`, `gas_ele_ratio`, `imp_cons_ratio`
-
-- **Forecast Accuracy:**
-  - `forecast_error_12m`, `forecast_error_year`, `discount_per_kwh`
-
-- **Price Dynamics:**
-  - Differences in peak/mid/off-peak energy & power prices
-
-- **Profitability Metrics:**
-  - `gross_net_margin_ratio`, `margin_per_product`
-
-- **Behavioral Indicators:**
-  - `has_multiple_products`, `pow_max_log`
-
-- **Categorical Handling:**
-  - One-hot encoded `channel_sales`, `origin_up`, and `has_gas`
-
-- **Antiquity Buckets:**
-  - `antig_category`: Binned into `new`, `recent`, `mid`, and `old`
-
-- **Price Change Over Time:**
-  - Created December vs January price difference features
-
+# 🛠️ Feature Engineering
+* New features were created to better capture client behavior and contract characteristics:
 ---
+# 🔁 Time-based Features
+* Tenure duration
 
-## 🤖 Modeling
+* Days since last modification
 
-- **Model Used:** `RandomForestClassifier` (Scikit-learn)
-- **Train/Test Split:** 80% training, 20% testing with stratification on churn
-- **Evaluation Metrics:**
-  - Accuracy
-  - Precision, Recall, F1-Score
-  - ROC AUC Score
-  - Confusion Matrix
-  - Feature Importance Chart
-
-The model achieved **perfect classification** with:
-- Training Accuracy: `1.00`
-- Testing Accuracy: `1.00`
-- ROC AUC Score: `1.00`
-
+* Days to renewal
 ---
+# 🔌 Consumption & Forecast Features
+* Average monthly consumption
 
-## 💾 Model Deployment
+* Change in consumption
 
-The trained model was saved as a `.pkl` file:
+* Gas/electricity ratio
 
-```python
-with open('random_forest_model.pkl', 'wb') as f:
-    pickle.dump(clf, f)
+* Forecast vs actual error
 
+* Discount per kWh
 ---
+# 💸 Price-Based Features
+* Peak vs off-peak price differences
 
-📈 Business Recommendations
-Based on analysis and model results, the following actionable recommendations are made:
+* Mid-peak comparisons
 
-1. 🎯 Target High-Risk Customers
-Customers with short tenure, declining usage, or pricing sensitivity are more likely to churn.
+* January–December price deltas
+---
+# 📈 Margin & Product Features
+* Gross/net margin ratios
 
-Use the model to flag them early for personalized outreach.
+* Products per client
 
-2. 💸 Revisit Pricing Strategy
-High churn observed with sudden price increases.
+* Power consumption log
 
-Consider loyalty-based price protection or tiered plans to improve retention.
+* Antiquity bins
+---
+# 🧼 Data Preprocessing
+* Converted date columns to datetime
 
-3. 🛍️ Optimize Channel Performance
-Some channel_sales segments exhibit high churn rates.
+* Encoded categorical variables using OrdinalEncoder
 
-Conduct training or audits to improve customer acquisition and service.
+* Converted engineered features to integer type
 
-4. 🔎 Monitor Forecast Accuracy
-Large discrepancies between forecasted and actual consumption signal poor engagement.
+* Binned antig_category into ordinal codes
+---
+# 🧪 Train/Test Split
+* 80/20 stratified split:
 
-Use this as a trigger for customer support follow-ups.
+* X_train: (140,119, 47)
 
-5. 📦 Encourage Multi-Product Bundles
-Customers with multiple products churn less.
+* X_test: (35,030, 47)
+---
+# ⚖️ Handling Imbalanced Data
+* To combat class imbalance (churn rate ~9.7%), both oversampling and undersampling techniques were applied:
+---
+# 🔁 RandomOverSampler
+* Duplicates minority class to match majority
 
-Promote bundled offers or loyalty rewards to encourage multi-product adoption.
+* Final shape: 252,882 samples
+---
+# ✂️ RandomUnderSampler
+* Trims majority class down to match minority
 
-6. 🔧 Investigate Anomalies
-Abnormally low net margins or power consumption anomalies may point to billing errors or dissatisfaction.
+* Final shape: 27,356 samples
+---
+# 🌲 Model Training – Decision Tree Classifier
+* Three models were trained:
 
-Use internal audits and alerts.
+**Model Type	Train Accuracy	Test Accuracy**
+* Original Data	1.00	0.9999
+* Oversampled	1.00	0.9998
+* Undersampled	0.9596	0.9550
 
-7. ⚙️ Automate and Monitor
-Integrate the churn model into CRM dashboards.
+**Cross-validation on original data (5 folds):**
+* [0.9997, 0.9998, 0.9999, 0.9998, 0.9997]
+* Mean Accuracy: 0.9998
+* ✅ Indicates excellent generalization and low variance between training and testing.
+---
+# 📉 Evaluation Metrics
+**Classification Report**
 
-Generate monthly churn-risk reports for the sales and support teams.
+* Precision, Recall, F1-score = 1.00 (across both classes)
 
-✅ Conclusion
-This project demonstrates the full data science pipeline—from data exploration and feature engineering to model training and business insights. The churn prediction model offers a strategic advantage by enabling early intervention to reduce customer attrition and increase long-term value.
+* Confusion Matrix
+
+* Perfect classification observed
+
+* Baseline Accuracy: 90.2%
+---
+# 🔍 Feature Importance (Top 10)
+**Feature	Importance**
+* forecast_meter_rent_12m	0.077
+* margin_net_pow_ele	0.073
+* offpeak_diff_dec_january_energy	0.072
+* cons_change	0.069
+* days_since_modif	0.062
+* pow_max	0.055
+* forecast_error_year	0.040
+* tenure_days	0.040
+* cons_last_month	0.040
+* forecast_price_energy_off_peak	0.039
+
+* Visualized with horizontal bar chart for easier interpretation.
